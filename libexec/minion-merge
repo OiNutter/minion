@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+set -e
+
+merge_folders() {
+	local path="$1"
+	local target=${path//$ORIGINAL/$TARGET}
+	
+	if [ ! -d "$DIRECTORY" ]; then
+  		echo "$target doesn't exist!"
+	fi
+}
+
+ORIGINAL="$1"
+TARGET="$2"
+
+for f in $(find $ORIGINAL); do merge_folders "$f"; done
