@@ -1,16 +1,30 @@
 #!/usr/bin/env bash
 set -e
 
-merge_folders() {
+SAVEIFS=$IFS
+IFS=$(echo -en "\n\b")
+
+copy_file() {
+
 	local path="$1"
 	local target=${path//$ORIGINAL/$TARGET}
 	
-	if [ ! -d "$DIRECTORY" ]; then
-  		echo "$target doesn't exist!"
+	$(mkdir -p $(dirname $target))
+
+	if [ -f $path ]; then
+
+		if [ ! -f $target ]; then
+    		cp $path $target
+		fi
+
 	fi
+
 }
 
 ORIGINAL="$1"
 TARGET="$2"
 
-for f in $(find $ORIGINAL); do merge_folders "$f"; done
+for f in $(find $ORIGINAL); do copy_file "$f"; done
+
+# restore $IFS
+IFS=$SAVEIFS
